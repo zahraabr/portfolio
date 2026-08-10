@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --pink-primary: #ab1b6f;
+    --pink-light: #ffe0f2;
+    --pink-medium: #e362ad;
+    /* real hover / current-page link colors, taken from the live site's CSS */
+    --pink-dark: #6b0f45;
+    --pink-current: #750848;
+    --bg: #ffffff;
+    --text-primary: #0f0f0f;
+    --text-secondary: #6b6b6b;
+    --text-muted: #a0a0a0;
+    --border: #f0f0f0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--pink-light);
+    color: var(--pink-primary);
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--pink-medium);
+    border-radius: 2px;
+  }
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Link reset */
+a {
+  text-decoration: none;
+  color: inherit;
+}
