@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Work from './pages/Work';
 import About from './pages/About';
 import ProjectDetail from './pages/ProjectDetail';
+import ScoutTalent from './pages/ScoutTalent';
 
 const pageVariants = {
   initial: { opacity: 0, y: 18 },
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/works" element={<Work />} />
+          <Route path="/works/scout-talent-question-library" element={<ScoutTalent />} />
           <Route path="/works/:id" element={<ProjectDetail />} />
           <Route path="/about" element={<About />} />
         </Routes>

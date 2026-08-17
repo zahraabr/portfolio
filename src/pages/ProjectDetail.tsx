@@ -89,7 +89,7 @@ export default function ProjectDetail() {
               href={project.figmaLink}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#ab1b6f] text-white text-sm rounded hover:bg-[#6b0f45] transition-all duration-300 hover:shadow-soft-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#ab1b6f] text-white text-sm rounded-full hover:bg-[#6b0f45] transition-all duration-300 hover:shadow-soft-lg"
             >
               See Figma Link
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,16 @@ export default function ProjectDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: (i % 4) * 0.05 }}
-                className="rounded-2xl overflow-hidden bg-gray-50 shadow-soft"
+                className={`rounded-2xl overflow-hidden bg-gray-50 ${
+                  project.id === 'growcery' || project.id === 'sehatjiwa' ? '' : 'shadow-soft'
+                } ${project.id === 'sehatjiwa' || project.id === 'nexdo' ? 'mx-auto' : ''}`}
+                style={
+                  project.id === 'sehatjiwa'
+                    ? { maxWidth: '300px' }
+                    : project.id === 'nexdo'
+                      ? { maxWidth: '320px' }
+                      : undefined
+                }
               >
                 <img src={src} alt={`${project.title} — screen ${i + 1}`} className="w-full h-auto" />
               </motion.div>

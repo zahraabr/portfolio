@@ -16,8 +16,19 @@ export interface Project {
   hasDetail: boolean;
 }
 
-/** Order matches the live site's Works grid: Growcery, Sehat Jiwa, Nexdo, Scout Talent */
+/** Scout Talent first, then Growcery, Sehat Jiwa, Nexdo */
 export const projects: Project[] = [
+  {
+    id: 'scout-talent-question-library',
+    title: 'Scout Talent: Question Library',
+    type: 'Web App',
+    concept: 'Question Library',
+    role: 'UI/UX Designer',
+    description:
+      'A feature on Scout Talent’s Recruit platform that lets HR and hiring managers save and reuse question templates instead of re-entering them for every job.',
+    thumbnail: '/images/scout-talent/hero.png',
+    hasDetail: true,
+  },
   {
     id: 'growcery',
     title: 'Growcery',
@@ -47,20 +58,9 @@ export const projects: Project[] = [
     description:
       'Sehat Jiwa is a mental health application owned by the Ministry of Health Indonesia.',
     thumbnail: '/images/thumbs/sehatjiwa.png',
-    gallery: [
-      '/images/sehatjiwa/01.png',
-      '/images/sehatjiwa/02.png',
-      '/images/sehatjiwa/03.png',
-      '/images/sehatjiwa/04.png',
-      '/images/sehatjiwa/05.png',
-      '/images/sehatjiwa/06.png',
-      '/images/sehatjiwa/07.png',
-      '/images/sehatjiwa/08.png',
-      '/images/sehatjiwa/09.png',
-      '/images/sehatjiwa/10.png',
-      '/images/sehatjiwa/11.png',
-      '/images/sehatjiwa/12.png',
-    ],
+    // single flattened screenshot of the live site's continuous phone-mockup
+    // sequence (splash → onboarding → home → chat → doctor list → schedule)
+    gallery: ['/images/sehatjiwa/composite.png'],
     figmaLink:
       'https://www.figma.com/design/7VnQynVfFIbz3G6PooxI6g/Calming-Design?node-id=196-8123&t=8QkYipjTGAgxzktG-1',
     hasDetail: true,
@@ -83,16 +83,6 @@ export const projects: Project[] = [
       '/images/nexdo/06.png',
     ],
     hasDetail: true,
-  },
-  {
-    id: 'scout-talent-question-library',
-    title: 'Scout Talent: Question Library',
-    type: 'Web App',
-    concept: 'Question Library',
-    role: 'UI/UX Designer',
-    description: '',
-    thumbnail: '/images/thumbs/scout-talent.png',
-    hasDetail: false,
   },
 ];
 

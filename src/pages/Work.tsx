@@ -23,7 +23,11 @@ function WorkCard({ project, index }: { project: (typeof projects)[0]; index: nu
           <img
             src={project.thumbnail}
             alt={project.title}
-            className="absolute inset-0 w-full h-full object-cover object-top"
+            className={
+              project.id === 'scout-talent-question-library'
+                ? 'absolute inset-0 w-full h-full object-contain p-6'
+                : 'absolute inset-0 w-full h-full object-cover object-top'
+            }
           />
         )}
       </motion.div>

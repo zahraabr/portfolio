@@ -10,15 +10,8 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -30,9 +23,7 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white shadow-soft' : 'bg-white'
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-white"
       >
         <div className="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
@@ -46,19 +37,13 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-medium tracking-wide transition-colors duration-200 ${
+                className={`text-sm font-medium tracking-wide transition-colors duration-200 ${
                   location.pathname === link.path
                     ? 'text-[#750848]'
                     : 'text-gray-600 hover:text-[#6b0f45]'
                 }`}
               >
                 {link.label}
-                {location.pathname === link.path && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#750848]"
-                  />
-                )}
               </Link>
             ))}
           </div>
