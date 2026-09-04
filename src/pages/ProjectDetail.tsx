@@ -89,7 +89,7 @@ export default function ProjectDetail() {
               href={project.figmaLink}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#ab1b6f] text-white text-sm rounded-full hover:bg-[#6b0f45] transition-all duration-300 hover:shadow-soft-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#ab1b6f] text-white text-sm rounded-full hover:bg-[#6b0f45] transition-all duration-300"
             >
               See Figma Link
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
