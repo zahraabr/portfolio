@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface LightboxProps {
@@ -14,6 +14,8 @@ const ZOOM_STEP = 0.5;
 
 export default function Lightbox({ images, index, onClose, onIndexChange }: LightboxProps) {
   const [zoom, setZoom] = useState(1);
+  const [hasDragged, setHasDragged] = useState(false);
+  const dragAreaRef = useRef<HTMLDivElement>(null);
 
   const goPrev = useCallback(() => {
     setZoom(1);
@@ -45,6 +47,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = original;
+      document.body.style.cursor = '';
     };
   }, []);
 
@@ -127,21 +130,38 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
 
       {/* Image — clicking the backdrop area here (outside the picture) closes the modal */}
       <div
-        className="w-full h-full flex items-center justify-center overflow-auto px-16 py-16"
+        ref={dragAreaRef}
+        className="w-full h-full flex items-center justify-center overflow-hidden px-16 py-16"
         onWheel={handleWheel}
       >
         <motion.img
-          key={images[index]}
+          key={`${images[index]}-${zoom > 1 ? 'zoomed' : 'reset'}`}
           src={images[index]}
           alt=""
           initial={{ opacity: 0, scale: 0.97 * zoom }}
           animate={{ opacity: 1, scale: zoom }}
           transition={{ duration: 0.2 }}
+          drag={zoom > 1}
+          dragElastic={1}
+          dragMomentum={false}
+          onDragStart={() => {
+            setHasDragged(false);
+            document.body.style.cursor = 'grabbing';
+          }}
+          onDrag={() => setHasDragged(true)}
+          onDragEnd={() => {
+            document.body.style.cursor = '';
+          }}
           onClick={(e) => {
             e.stopPropagation();
+            if (hasDragged) {
+              setHasDragged(false);
+              return;
+            }
             setZoom((z) => (z > 1 ? 1 : 2));
           }}
-          style={{ cursor: zoom > 1 ? 'zoom-out' : 'zoom-in' }}
+          style={{ cursor: zoom > 1 ? 'grab' : 'zoom-in' }}
+          whileDrag={{ cursor: 'grabbing' }}
           className="max-w-full max-h-full object-contain rounded-lg shadow-soft-lg"
         />
       </div>

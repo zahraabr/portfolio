@@ -28,39 +28,27 @@ function Figure({ src, alt, className = '' }: { src: string; alt: string; classN
 /* ─── Design Process indicator — tracks scroll position, click jumps to section ─── */
 function StepIndicator({ active, onSelect }: { active: number; onSelect: (i: number) => void }) {
   return (
-    <div className="flex items-center w-full">
+    <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
       {steps.map((step, i) => {
         const state = i === active ? 'active' : i < active ? 'done' : 'upcoming';
+        const isPink = state !== 'upcoming';
         return (
-          <div key={step} className={`flex items-center ${i === 0 ? '' : 'flex-1'}`}>
-            {i > 0 && (
-              <span className={`flex-1 h-px ${i <= active ? 'bg-[#ab1b6f]' : 'bg-gray-200'}`} />
-            )}
-            <button onClick={() => onSelect(i)} className="flex flex-col items-center gap-2 px-2">
-              <span
-                className={`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center border-2 transition-colors duration-300 ${
-                  state === 'upcoming'
-                    ? 'border-gray-200 text-gray-400 bg-white'
-                    : 'border-[#ab1b6f] bg-[#ab1b6f] text-white'
-                }`}
-              >
-                {state === 'done' ? (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  i + 1
-                )}
-              </span>
-              <span
-                className={`text-xs font-medium whitespace-nowrap ${
-                  state === 'active' ? 'text-[#ab1b6f]' : 'text-gray-500'
-                }`}
-              >
-                {step}
-              </span>
-            </button>
-          </div>
+          <button key={step} onClick={() => onSelect(i)} className="flex items-center gap-2">
+            <span
+              className={`w-9 h-9 rounded-full text-sm font-bold flex items-center justify-center transition-colors duration-300 ${
+                isPink ? 'bg-[#ffe0f2] text-[#ab1b6f]' : 'bg-gray-100 text-gray-400'
+              }`}
+            >
+              {i + 1}
+            </span>
+            <span
+              className={`text-sm whitespace-nowrap ${
+                state === 'active' ? 'font-semibold text-[#ab1b6f]' : isPink ? 'text-[#ab1b6f]' : 'text-gray-400'
+              }`}
+            >
+              {step}
+            </span>
+          </button>
         );
       })}
     </div>
@@ -246,8 +234,7 @@ export default function ScoutTalent() {
         </p>
 
         <div
-          className="rounded-2xl p-8 text-center"
-          style={{ background: 'linear-gradient(135deg, #ab1b6f 0%, #e362ad 100%)' }}
+          className="rounded-2xl p-8 text-center bg-[#e362ad]"
         >
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-white/70 mb-3">
             Problem Statement
