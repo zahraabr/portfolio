@@ -86,15 +86,75 @@ function WorkCard({ project, index }: { project: (typeof projects)[0]; index: nu
   );
 }
 
+/* Real aspect ratio (height ÷ width) of each glance image, so columns balance by
+   actual visual weight instead of just round-robin index order. */
+const glanceRatios = [4273 / 1440, 2270 / 3840, 736 / 414, 1080 / 1080, 982 / 1512, 900 / 1440, 1151 / 1512, 1688 / 780];
+
+/** Height (in the same relative units as glanceRatios) taken up by the gap between stacked images. */
+const GAP_UNIT = 0.09;
+
+/**
+ * "Largest Processing Time" bin packing: place the biggest images first (while every
+ * column is still equally empty), always into the currently-shortest column. This
+ * balances total column height far better than assigning in original file order, where
+ * a big image landing late has no choice but to pile onto whichever column is left.
+ * Each column's images are then re-sorted back to their original order for display.
+ */
+function packColumns(count: number) {
+  const items = glanceImages.map((src, i) => ({ src, i, ratio: glanceRatios[i] ?? 1 }));
+  const bySize = [...items].sort((a, b) => b.ratio - a.ratio);
+
+  const columns: { src: string; i: number }[][] = Array.from({ length: count }, () => []);
+  const heights = new Array(count).fill(0);
+
+  bySize.forEach((item) => {
+    let shortest = 0;
+    for (let c = 1; c < count; c++) if (heights[c] < heights[shortest]) shortest = c;
+    columns[shortest].push(item);
+    heights[shortest] += item.ratio + (columns[shortest].length > 1 ? GAP_UNIT : 0);
+  });
+
+  columns.forEach((col) => col.sort((a, b) => a.i - b.i));
+  return columns;
+}
+
 /* ─── Masonry image gallery ────────────────────────────────── */
 function GlanceGallery({ onImageClick }: { onImageClick: (index: number) => void }) {
-  const columns: { src: string; i: number }[][] = [[], [], []];
-  glanceImages.forEach((src, i) => columns[i % 3].push({ src, i }));
+  const columns2 = packColumns(2);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-16">
+    <div className="grid grid-cols-2 md:hidden gap-4 mb-16">
+      {columns2.map((col, ci) => (
+        <div key={ci} className="flex flex-col gap-4">
+          {col.map(({ src, i }) => (
+            <motion.button
+              key={src}
+              type="button"
+              onClick={() => onImageClick(i)}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl overflow-hidden bg-gray-50 shadow-soft cursor-zoom-in text-left"
+              aria-label="Open picture"
+            >
+              <img src={src} alt="" className="w-full h-auto object-cover" />
+            </motion.button>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function GlanceGalleryDesktop({ onImageClick }: { onImageClick: (index: number) => void }) {
+  const columns = packColumns(3);
+
+  return (
+    <div className="hidden md:grid grid-cols-3 gap-4 mb-16">
       {columns.map((col, ci) => (
-        <div key={ci} className={`flex flex-col gap-4 ${ci === 2 ? 'hidden md:flex' : ''}`}>
+        <div key={ci} className="flex flex-col gap-4">
           {col.map(({ src, i }) => (
             <motion.button
               key={src}
@@ -196,6 +256,7 @@ export default function Home() {
         </RevealText>
 
         <GlanceGallery onImageClick={setLightboxIndex} />
+        <GlanceGalleryDesktop onImageClick={setLightboxIndex} />
 
         <RevealText delay={0.1}>
           <div className="flex flex-col items-center gap-2 text-base">

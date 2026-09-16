@@ -23,7 +23,7 @@ export default function About() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          src="/images/about/profile.jpeg"
+          src="/images/about/image.png"
           alt={contact.name}
           className="w-56 h-56 md:w-72 md:h-72 rounded-full object-cover"
         />
@@ -48,8 +48,43 @@ export default function About() {
         </div>
       </div>
 
-      {/* Contact + Experience — side by side */}
-      <div className="grid md:grid-cols-[auto_1fr] gap-10 md:gap-16">
+      {/* Experience + Contact — side by side */}
+      <div className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-16">
+        {/* Experience — vertical timeline, newest first */}
+        <section>
+          <h2 className="text-2xl font-medium text-gray-900 mb-10">Experience</h2>
+
+          <div className="relative flex flex-col gap-10">
+            {experience.map((exp, i) => {
+              const ref = useRef(null);
+              const inView = useInView(ref, { once: true });
+              return (
+                <motion.div
+                  key={`${exp.company}-${exp.period}`}
+                  ref={ref}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="relative pl-10 grid grid-cols-2 gap-6"
+                >
+                  {i < experience.length - 1 && (
+                    <span className="absolute top-[11px] left-[7px] w-px h-[calc(100%+2.5rem)] bg-[#ffe0f2]" />
+                  )}
+                  <span className="absolute top-1 left-0 w-3.5 h-3.5 rounded-full bg-[#ab1b6f]" />
+                  <div>
+                    <p className="font-semibold text-gray-900">{exp.role}</p>
+                    <p className="text-gray-800">{exp.company}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-[#ab1b6f]">{exp.period}</p>
+                    <p className="text-sm text-gray-400 mt-1">{exp.location}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Contact */}
         <section>
           <h2 className="text-2xl font-medium text-gray-900 mb-6">Contact</h2>
@@ -68,37 +103,6 @@ export default function About() {
             >
               <span aria-hidden="true">🔗</span> {contact.linkedinLabel}
             </a>
-          </div>
-        </section>
-
-        {/* Experience — horizontal timeline, newest first */}
-        <section>
-          <h2 className="text-2xl font-medium text-gray-900 mb-10">Experience</h2>
-
-          <div className="overflow-x-auto pb-2">
-            <div className="relative flex gap-10 min-w-[900px]">
-              <div className="absolute left-0 right-0 top-[7px] h-px bg-[#ffe0f2]" />
-              {experience.map((exp, i) => {
-                const ref = useRef(null);
-                const inView = useInView(ref, { once: true });
-                return (
-                  <motion.div
-                    key={`${exp.company}-${exp.period}`}
-                    ref={ref}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: i * 0.08 }}
-                    className="relative flex-1 pt-6"
-                  >
-                    <span className="absolute top-0 left-0 w-3.5 h-3.5 rounded-full bg-[#ab1b6f]" />
-                    <p className="text-sm text-[#ab1b6f] mb-2">{exp.period}</p>
-                    <p className="font-semibold text-gray-900">{exp.role}</p>
-                    <p className="text-gray-800">{exp.company}</p>
-                    <p className="text-sm text-gray-400 mt-1">{exp.location}</p>
-                  </motion.div>
-                );
-              })}
-            </div>
           </div>
         </section>
       </div>

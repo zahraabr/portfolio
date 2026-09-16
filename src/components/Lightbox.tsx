@@ -142,7 +142,6 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
           animate={{ opacity: 1, scale: zoom }}
           transition={{ duration: 0.2 }}
           drag={zoom > 1}
-          dragElastic={1}
           dragMomentum={false}
           onDragStart={() => {
             setHasDragged(false);

@@ -87,7 +87,7 @@ export const projects: Project[] = [
 ];
 
 /** Static role badges shown under the hero heading on the home page */
-export const roles = ['UI/UX Designer', 'Product Analyst', 'Graphic Designer'];
+export const roles = ['Product Design', 'Product Management', 'UI/UX Design', 'Visual Design'];
 
 export interface ExperienceEntry {
   role: string;
@@ -99,10 +99,16 @@ export interface ExperienceEntry {
 /** Newest first — matches the live site's left-to-right horizontal timeline */
 export const experience: ExperienceEntry[] = [
   {
+    role: 'Junior Product Owner',
+    company: 'Scout Talent',
+    location: 'Brisbane, Queensland',
+    period: 'September 2026 - present',
+  },
+  {
     role: 'UI/UX Designer',
     company: 'Scout Talent',
     location: 'Brisbane, Queensland',
-    period: 'Oct 2023 - present',
+    period: 'Oct 2023 - Sep 2026',
   },
   {
     role: 'UI/UX Developer',
@@ -152,4 +158,4 @@ export const contact = {
 };
 
 export const bio =
-  "I'm Azzahra Abraara, but you can call me Zahra! I'm a curious and creative UI/UX designer with 3+ years of experience turning complex user problems into smooth, user-friendly designs for web and mobile. I hold a Bachelor's in Information Technology majoring in User Experience Design from the University of Queensland and a Bachelor's in Computer Science from Universitas Indonesia. I'm a Figma expert and ready to craft delightful products. Nice to meet you here!";
+  "Hi, I'm Zahra! A Senior Product Designer with 4+ years of experience turning complex problems into intuitive digital experiences across web and mobile. I've built design systems from scratch, shipped features that moved real metrics, and I use AI tools like Claude Code and Cursor as part of my daily workflow. I hold a Bachelor's in IT (UX Design) from UQ and a Bachelor's in Computer Science from Universitas Indonesia. I design with both craft and curiosity and I'm always looking for the next meaningful problem to solve!";
