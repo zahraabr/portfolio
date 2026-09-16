@@ -102,7 +102,7 @@ export const experience: ExperienceEntry[] = [
     role: 'Junior Product Owner',
     company: 'Scout Talent',
     location: 'Brisbane, Queensland',
-    period: 'September 2026 - present',
+    period: 'Sep 2026 - present',
   },
   {
     role: 'UI/UX Designer',
