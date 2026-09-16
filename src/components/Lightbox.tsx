@@ -67,6 +67,13 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
     style.overflow = 'hidden';
 
     return () => {
+      // Suspend transitions/animations for the instant we restore layout —
+      // otherwise a card that ends up back under the cursor during this
+      // reflow can pick up a hover state and visibly play its transition.
+      const freeze = document.createElement('style');
+      freeze.textContent = '*, *::before, *::after { transition: none !important; animation: none !important; }';
+      document.head.appendChild(freeze);
+
       style.position = original.position;
       style.top = original.top;
       style.left = original.left;
@@ -77,6 +84,9 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
       // The site enables `scroll-behavior: smooth` globally, which would
       // otherwise animate this restore into a visible scroll — jump instantly.
       window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
+
+      void document.body.offsetHeight;
+      requestAnimationFrame(() => freeze.remove());
     };
   }, []);
 
