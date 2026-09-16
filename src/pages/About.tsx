@@ -75,7 +75,7 @@ export default function About() {
                     <p className="font-semibold text-gray-900">{exp.role}</p>
                     <p className="text-gray-800">{exp.company}</p>
                   </div>
-                  <div>
+                  <div className="text-right">
                     <p className="text-sm text-[#ab1b6f]">{exp.period}</p>
                     <p className="text-sm text-gray-400 mt-1">{exp.location}</p>
                   </div>
