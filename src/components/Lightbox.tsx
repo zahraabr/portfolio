@@ -74,7 +74,9 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
       style.width = original.width;
       style.overflow = original.overflow;
       style.cursor = '';
-      window.scrollTo(0, scrollY);
+      // The site enables `scroll-behavior: smooth` globally, which would
+      // otherwise animate this restore into a visible scroll — jump instantly.
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
     };
   }, []);
 
