@@ -1,12 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "abraara.vercel.app" }],
-      "destination": "https://abraara.com/:path*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
