@@ -43,11 +43,38 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
   }, [onClose, goPrev, goNext, zoomIn, zoomOut]);
 
   useEffect(() => {
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // Plain `overflow: hidden` on body is enough on most browsers, but Safari
+    // (especially iOS) can fail to re-enable scrolling afterwards, particularly
+    // once a fixed-position overlay with an active drag/transform has been on
+    // top of the page. Locking body position and explicitly restoring the
+    // scroll offset on cleanup avoids relying on that toggle working correctly.
+    const scrollY = window.scrollY;
+    const { style } = document.body;
+    const original = {
+      position: style.position,
+      top: style.top,
+      left: style.left,
+      right: style.right,
+      width: style.width,
+      overflow: style.overflow,
+    };
+
+    style.position = 'fixed';
+    style.top = `-${scrollY}px`;
+    style.left = '0';
+    style.right = '0';
+    style.width = '100%';
+    style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = original;
-      document.body.style.cursor = '';
+      style.position = original.position;
+      style.top = original.top;
+      style.left = original.left;
+      style.right = original.right;
+      style.width = original.width;
+      style.overflow = original.overflow;
+      style.cursor = '';
+      window.scrollTo(0, scrollY);
     };
   }, []);
 
