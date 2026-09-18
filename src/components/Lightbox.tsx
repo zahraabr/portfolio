@@ -43,50 +43,11 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
   }, [onClose, goPrev, goNext, zoomIn, zoomOut]);
 
   useEffect(() => {
-    // Plain `overflow: hidden` on body is enough on most browsers, but Safari
-    // (especially iOS) can fail to re-enable scrolling afterwards, particularly
-    // once a fixed-position overlay with an active drag/transform has been on
-    // top of the page. Locking body position and explicitly restoring the
-    // scroll offset on cleanup avoids relying on that toggle working correctly.
-    const scrollY = window.scrollY;
-    const { style } = document.body;
-    const original = {
-      position: style.position,
-      top: style.top,
-      left: style.left,
-      right: style.right,
-      width: style.width,
-      overflow: style.overflow,
-    };
-
-    style.position = 'fixed';
-    style.top = `-${scrollY}px`;
-    style.left = '0';
-    style.right = '0';
-    style.width = '100%';
-    style.overflow = 'hidden';
-
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
-      // Suspend transitions/animations for the instant we restore layout —
-      // otherwise a card that ends up back under the cursor during this
-      // reflow can pick up a hover state and visibly play its transition.
-      const freeze = document.createElement('style');
-      freeze.textContent = '*, *::before, *::after { transition: none !important; animation: none !important; }';
-      document.head.appendChild(freeze);
-
-      style.position = original.position;
-      style.top = original.top;
-      style.left = original.left;
-      style.right = original.right;
-      style.width = original.width;
-      style.overflow = original.overflow;
-      style.cursor = '';
-      // The site enables `scroll-behavior: smooth` globally, which would
-      // otherwise animate this restore into a visible scroll — jump instantly.
-      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
-
-      void document.body.offsetHeight;
-      requestAnimationFrame(() => freeze.remove());
+      document.body.style.overflow = original;
+      document.body.style.cursor = '';
     };
   }, []);
 
