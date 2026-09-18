@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 
 interface LightboxProps {
   images: string[];
@@ -16,6 +16,17 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
   const [zoom, setZoom] = useState(1);
   const [hasDragged, setHasDragged] = useState(false);
   const dragAreaRef = useRef<HTMLDivElement>(null);
+  const panX = useMotionValue(0);
+  const panY = useMotionValue(0);
+
+  // Recenter the pan offset whenever we return to 1x, so the image doesn't
+  // stay visibly shifted at its non-draggable resting scale.
+  useEffect(() => {
+    if (zoom === 1) {
+      panX.set(0);
+      panY.set(0);
+    }
+  }, [zoom, panX, panY]);
 
   const goPrev = useCallback(() => {
     setZoom(1);
@@ -134,10 +145,10 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
         onWheel={handleWheel}
       >
         <motion.img
-          key={`${images[index]}-${zoom > 1 ? 'zoomed' : 'reset'}`}
+          key={images[index]}
           src={images[index]}
           alt=""
-          initial={{ opacity: 0, scale: 0.97 * zoom }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: zoom }}
           transition={{ duration: 0.2 }}
           drag={zoom > 1}
@@ -158,7 +169,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
             }
             setZoom((z) => (z > 1 ? 1 : 2));
           }}
-          style={{ cursor: zoom > 1 ? 'grab' : 'zoom-in' }}
+          style={{ x: panX, y: panY, cursor: zoom > 1 ? 'grab' : 'zoom-in' }}
           whileDrag={{ cursor: 'grabbing' }}
           className="max-w-full max-h-full object-contain rounded-lg shadow-soft-lg"
         />
